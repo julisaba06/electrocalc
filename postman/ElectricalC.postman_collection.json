@@ -1,0 +1,93 @@
+{
+  "info": {
+    "name": "ElectricalC API",
+    "description": "Solicitudes disponibles actualmente para probar ElectricalC.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Estado de la API",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/"
+      }
+    },
+    {
+      "name": "Calculadora",
+      "item": [
+        {
+          "name": "Ley de Ohm",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"voltage\": 12,\n  \"resistance\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/calculator/ohm"
+          }
+        },
+        {
+          "name": "Potencia eléctrica",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"voltage\": 12,\n  \"current\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/calculator/power"
+          }
+        },
+        {
+          "name": "Conversión de unidades",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unit\": \"V\",\n  \"value\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/calculator/conversion"
+          }
+        }
+      ]
+    }
+  ]
+}

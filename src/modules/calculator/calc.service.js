@@ -60,47 +60,44 @@ export function calculatePower({ voltage, current }) {
 // CONVERSIONES
 
 const units = {
-  voltage: {
-    mV: 0.001,
-    V: 1,
-    kV: 1000
-  },
-  current: {
-    mA: 0.001,
-    A: 1,
-    kA: 1000
-  },
-  resistance: {
-    mOhm: 0.001,
-    Ohm: 1,
-    kOhm: 1000,
-    MOhm: 1000000
-  },
-  power: {
-    mW: 0.001,
-    W: 1,
-    kW: 1000,
-    MW: 1000000
-  }
+  mV: { quantity: "voltage", factor: 0.001 },
+  V: { quantity: "voltage", factor: 1 },
+  kV: { quantity: "voltage", factor: 1000 },
+  mA: { quantity: "current", factor: 0.001 },
+  A: { quantity: "current", factor: 1 },
+  kA: { quantity: "current", factor: 1000 },
+  mOhm: { quantity: "resistance", factor: 0.001 },
+  Ohm: { quantity: "resistance", factor: 1 },
+  kOhm: { quantity: "resistance", factor: 1000 },
+  MOhm: { quantity: "resistance", factor: 1000000 },
+  mW: { quantity: "power", factor: 0.001 },
+  W: { quantity: "power", factor: 1 },
+  kW: { quantity: "power", factor: 1000 },
+  MW: { quantity: "power", factor: 1000000 }
 };
 
-export function convertUnit({ category, value, from, to }) {
-  const categoryUnits = units[category];
+export function convertUnit({ unit, value }) {
+  const sourceUnit = units[unit];
 
-  if (!categoryUnits || !categoryUnits[from] || !categoryUnits[to]) {
-    throw new Error("Unidades o categoría no soportadas.");
+  if (!sourceUnit) {
+    throw new Error("La unidad indicada no está soportada.");
   }
 
   if (typeof value !== "number" || !Number.isFinite(value)) {
     throw new Error("El valor debe ser un número válido.");
   }
 
-  const baseValue = value * categoryUnits[from];
-  const result = baseValue / categoryUnits[to];
+  const baseValue = value * sourceUnit.factor;
+  const conversions = Object.entries(units)
+    .filter(([, targetUnit]) => targetUnit.quantity === sourceUnit.quantity)
+    .map(([targetUnit, definition]) => ({
+      unit: targetUnit,
+      value: baseValue / definition.factor
+    }));
 
   return {
-    category,
-    original: { value, unit: from },
-    converted: { value: result, unit: to }
+    quantity: sourceUnit.quantity,
+    input: { value, unit },
+    conversions
   };
 }
